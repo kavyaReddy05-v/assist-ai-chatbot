@@ -1,0 +1,26 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.top-nav {
+  background: #222;
+  padding: 12px 20px;
+  display: flex;
+  gap: 20px;
+}
+
+.top-nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.top-nav a:hover {
+  color: #4a3aff;
+}
