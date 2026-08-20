@@ -13,8 +13,8 @@ app.use(express.json({ limit: "10mb" }));
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-app.get("/api/ping", (req, res) => {
-  res.json({ message: "Server is working!" });
+app.get("/", (req, res) => {
+  res.json({ status: "Assist AI backend is running" });
 });
 
 app.post("/api/chat", async (req, res) => {
