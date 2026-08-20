@@ -18,10 +18,15 @@ function ChatWidget() {
   const [isListening, setIsListening] = useState(false)
   const [showEmojiPicker, setShowEmojiPicker] = useState(false)
   const fileInputRef = useRef(null)
+  const messagesEndRef = useRef(null)
 
   useEffect(() => {
     localStorage.setItem('chatMessages', JSON.stringify(messages))
   }, [messages])
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages, loading])
 
   const handleFileChange = (e) => {
     const file = e.target.files[0]
@@ -129,7 +134,7 @@ function ChatWidget() {
   }
 
   const sizeMap = {
-    small: { width: 300, height: 420 },
+    small: { width: 300, height: 460 },
     medium: { width: 380, height: 550 },
     large: { width: 440, height: 640 }
   }
@@ -176,7 +181,13 @@ function ChatWidget() {
     >
       <div className="chat-header" style={{ background: config.primaryColor }}>
         {config.logoUrl && <img src={config.logoUrl} alt="logo" className="chat-logo" />}
-        <span>{config.botName}</span>
+        <div className="header-text">
+          <span className="header-name">{config.botName}</span>
+          <span className="header-status">
+            <span className="status-dot"></span>
+            Active now
+          </span>
+        </div>
         <button className="close-btn" onClick={() => setOpen(false)}>×</button>
       </div>
 
@@ -196,7 +207,14 @@ function ChatWidget() {
             {msg.text && <ReactMarkdown>{msg.text}</ReactMarkdown>}
           </div>
         ))}
-        {loading && <div className="message bot">Typing...</div>}
+        {loading && (
+          <div className="message bot typing-bubble">
+            <span className="typing-dot"></span>
+            <span className="typing-dot"></span>
+            <span className="typing-dot"></span>
+          </div>
+        )}
+        <div ref={messagesEndRef} />
       </div>
 
       {isListening && (
@@ -234,6 +252,7 @@ function ChatWidget() {
               className="attach-btn"
               onClick={() => fileInputRef.current.click()}
               type="button"
+              title="Attach a file"
             >
               📎
             </button>
@@ -251,6 +270,7 @@ function ChatWidget() {
             className={`mic-btn ${isListening ? 'listening' : ''}`}
             onClick={startVoiceInput}
             type="button"
+            title="Voice input"
           >
             🎤
           </button>
@@ -260,6 +280,7 @@ function ChatWidget() {
             className="emoji-btn"
             onClick={() => setShowEmojiPicker((prev) => !prev)}
             type="button"
+            title="Emoji"
           >
             😊
           </button>
@@ -271,7 +292,11 @@ function ChatWidget() {
           onKeyDown={handleKeyDown}
           placeholder="Type a message..."
         />
-        <button onClick={sendMessage} style={{ background: config.primaryColor }}>
+        <button
+          className={`send-btn ${input.trim() || selectedFile ? 'active' : ''}`}
+          onClick={sendMessage}
+          style={{ background: config.primaryColor }}
+        >
           Send
         </button>
       </div>

@@ -4,7 +4,7 @@ const defaultConfig = {
   botName: 'Assist AI',
   logoUrl: '/assist-logo.svg',
   theme: 'light',
-  primaryColor: '#5C3A21',
+  primaryColor: '#49077e',
   font: 'Arial',
   fontSize: 14,
   widgetSize: 'medium',
