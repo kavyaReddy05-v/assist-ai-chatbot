@@ -4,7 +4,7 @@ import EmojiPicker from 'emoji-picker-react'
 import { useChatConfig } from '../context/ChatConfigContext'
 import './ChatWidget.css'
 
-function ChatWidget() {
+function ChatWidget({ standalone = false }) {
   const { config } = useChatConfig()
 
   const [messages, setMessages] = useState(() => {
@@ -150,11 +150,15 @@ function ChatWidget() {
     ? { left: 24, right: 'auto' }
     : { right: 24, left: 'auto' }
 
+  const positionType = standalone ? 'fixed' : 'absolute'
+
   if (!open) {
     return (
       <div
         className="chat-launcher"
         style={{
+          position: positionType,
+          bottom: 24,
           ...positionStyle,
           background: config.primaryColor,
           borderRadius: iconShapeMap[config.iconShape] || '50%'
@@ -170,6 +174,8 @@ function ChatWidget() {
     <div
       className={`chat-container anim-${config.animation}`}
       style={{
+        position: positionType,
+        bottom: 24,
         width: dims.width,
         height: dims.height,
         fontFamily: config.font,
